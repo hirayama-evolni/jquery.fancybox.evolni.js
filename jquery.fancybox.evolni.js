@@ -26,7 +26,24 @@
 
 		titleHeight = 0, titleStr = '', start_pos, final_pos, busy = false, fx = $.extend($('<div/>')[0], { prop: 0 }),
 
-		isIE6 = $.browser.msie && $.browser.version < 7 && !window.XMLHttpRequest,
+		// if jQuery.browser is not there(>= 1.9), create a compatible object instead.
+		browser = (function(){
+			var br = {
+				msie: false,
+				version: 0
+			};
+
+			var result = /(msie) ([\w.]+)/.exec(navigator.userAgent.toLowerCase());
+
+			if(result){
+				br.msie = true;
+				br.version = result[ 2 ];
+			}
+
+			return br;
+		})(), 
+
+		isIE6 = browser.msie && browser.version < 7 && !window.XMLHttpRequest,
 
 		/*
 		 * Private methods 
@@ -612,7 +629,7 @@
 			}
 
 			if (currentOpts.type == 'iframe') {
-				$('<iframe id="fancybox-frame" name="fancybox-frame' + new Date().getTime() + '" frameborder="0" hspace="0" ' + ($.browser.msie ? 'allowtransparency="true""' : '') + ' scrolling="' + selectedOpts.scrolling + '" src="' + currentOpts.href + '"></iframe>').appendTo(content);
+				$('<iframe id="fancybox-frame" name="fancybox-frame' + new Date().getTime() + '" frameborder="0" hspace="0" ' + (browser.msie ? 'allowtransparency="true""' : '') + ' scrolling="' + selectedOpts.scrolling + '" src="' + currentOpts.href + '"></iframe>').appendTo(content);
 			}
 
 			wrap.show();
